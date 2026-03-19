@@ -1,58 +1,66 @@
-﻿using System;
+using System;
 
 class Program
 {
     static void Main()
     {
         string[] input = Console.ReadLine().Split();
-        int a = int.Parse(input[0]);
-        int b = int.Parse(input[1]);
-        int c = int.Parse(input[2]);
+        long a = long.Parse(input[0]);
+        long b = long.Parse(input[1]);
+        long c = long.Parse(input[2]);
 
-        if (Solve(a, b, c, out int x, out int y))
+        
+        var result = ExtendedGcd(a, b);
+        long gcd = result.Item1;
+        long x0 = result.Item2;
+        long y0 = result.Item3;
+
+        
+        if (c % gcd != 0)
         {
-            Console.WriteLine($"{x} {y}");
+            Console.WriteLine("Impossible");
+            return;
+        }
+
+        
+        long multiplier = c / gcd;
+        x0 *= multiplier;
+        y0 *= multiplier;
+
+        
+        long b_div = b / gcd;
+        long a_div = a / gcd;
+
+        
+        long t;
+        if (b_div > 0)
+        {
+            t = (long)Math.Ceiling((double)(-x0) / b_div);
         }
         else
         {
-            Console.WriteLine("Impossible");
+            t = (long)Math.Floor((double)(-x0) / b_div);
         }
-        Console.WriteLine("Есаулов Тимофей, 090304-РПИа-о25");
+
+        long x = x0 + b_div * t;
+        long y = y0 - a_div * t;
+
+        Console.WriteLine($"{x} {y}");
     }
 
-    static bool Solve(int a, int b, int c, out int x, out int y)
-    {
-        x = 0; y = 0;
-        int gcd = NOD(a, b, out x, out y);
-
-        if (gcd != 0 && c % gcd == 0)
-        {
-            x *= c / gcd;
-            y *= c / gcd;
-
-            int b_gcd = b / gcd;
-            int k = (int)Math.Ceiling((double)-x / b_gcd);
-            x += k * b_gcd;
-            y -= k * (a / gcd);
-
-            return true;
-        }
-        return false;
-    }
-
-    static int NOD(int a, int b, out int x, out int y)
+    static Tuple<long, long, long> ExtendedGcd(long a, long b)
     {
         if (b == 0)
-        {
-            x = 1; y = 0;
-            return a;
-        }
+            return Tuple.Create(a, 1L, 0L);
 
-        int x1, y1;
-        int gcd = NOD(b, a % b, out x1, out y1);
+        var result = ExtendedGcd(b, a % b);
+        long gcd = result.Item1;
+        long x1 = result.Item2;
+        long y1 = result.Item3;
 
-        x = y1;
-        y = x1 - (a / b) * y1;
-        return gcd;
+        long x = y1;
+        long y = x1 - (a / b) * y1;
+
+        return Tuple.Create(gcd, x, y);
     }
 }
