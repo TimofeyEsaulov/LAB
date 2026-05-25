@@ -8,14 +8,14 @@
 using namespace std;
 
 // Константы и структуры
-const int INF = 1000000000; // Явно целое число
+const int INF = 1000000000;
 
 struct Cell {
     int r, c, h;
     bool operator>(const Cell& other) const { return h > other.h; }
 };
 
-// --- А) РЕАЛИЗАЦИЯ ЧЕРЕЗ МАССИВ (Неупорядоченный) ---
+// А) РЕАЛИЗАЦИЯ ЧЕРЕЗ МАССИВ
 class ArrayPQ {
     vector<Cell> data;
 public:
@@ -32,7 +32,7 @@ public:
     bool empty() const { return data.empty(); }
 };
 
-// --- Б) РЕАЛИЗАЦИЯ ЧЕРЕЗ СВЯЗАННЫЙ СПИСОК (Упорядоченный) ---
+//Б) РЕАЛИЗАЦИЯ ЧЕРЕЗ СВЯЗАННЫЙ СПИСОК
 class ListPQ {
     list<Cell> data;
 public:
@@ -49,7 +49,7 @@ public:
     bool empty() const { return data.empty(); }
 };
 
-// --- В) РЕАЛИЗАЦИЯ ЧЕРЕЗ STL (Используем композицию) ---
+// В) РЕАЛИЗАЦИЯ ЧЕРЕЗ STL
 class STLPQ {
     priority_queue<Cell, vector<Cell>, greater<Cell>> pq;
 public:
@@ -62,7 +62,7 @@ public:
     bool empty() { return pq.empty(); }
 };
 
-// Расчет матрицы предельных уровней (используется в задаче Б)
+// Расчет матрицы предельных уровней 
 vector<vector<int>> getWaterLevels(int M, int N, const vector<vector<int>>& A) {
     vector<vector<int>> water(M, vector<int>(N, INF));
     priority_queue<Cell, vector<Cell>, greater<Cell>> pq;
@@ -186,7 +186,6 @@ int main() {
                 int dr[] = {0, 0, 1, -1}, dc[] = {1, -1, 0, 0};
                 for (int i = 0; i < 4; i++) {
                     int nr = r + dr[i], nc = c + dc[i];
-                    // Строгое условие == targetLevel для корректного выделения впадины
                     if (nr > 0 && nr < M - 1 && nc > 0 && nc < N - 1 && 
                         !vis[nr][nc] && levels[nr][nc] == targetLevel && levels[nr][nc] > A[nr][nc]) {
                         vis[nr][nc] = true;
