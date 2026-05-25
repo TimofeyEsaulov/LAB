@@ -124,7 +124,7 @@ long long calculateTotalVolume(int M, int N, const vector<vector<int>>& A) {
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    cout << "Есаулов Тимофей Александрович, группа 090304-РПИа-25" << endl << endl;
+    cout << "Есаулов Тимофей Александрович, группа 090304-РПИа-о25" << endl << endl;
 
     int M, N;
     cout << "Введите M и N: ";
